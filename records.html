@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Administrator Records Dashboard – Kerala Digital Census 2026. Full household census record management.">
+    <title>Admin Panel – Kerala Census 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <main class="dashboard" role="main">
+
+        <nav class="glass-nav" aria-label="Admin panel navigation">
+            <div class="nav-brand">Kerala Census <span>Admin Panel</span></div>
+            <div class="nav-actions">
+                <span class="admin-badge">🔐 Administrator</span>
+                <button class="btn-logout" onclick="adminLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Overview statistics -->
+        <section class="stats-row" aria-label="Census overview statistics">
+            <div class="stat-card">
+                <div class="stat-val" id="stat-total">0</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="stat-total-members">0</div>
+                <div class="stat-label">Total Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="stat-wards-covered">0</div>
+                <div class="stat-label">Wards Covered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="stat-general">0</div>
+                <div class="stat-label">General Category</div>
+            </div>
+        </section>
+
+        <!-- Inline edit form (hidden until Edit is clicked) -->
+        <section class="glass-card form-card hidden" id="admin-edit-section" aria-label="Edit household record form">
+            <h2>✏️ Edit Household Record</h2>
+            <hr class="divider" aria-hidden="true">
+
+            <form id="admin-edit-form" novalidate>
+                <div class="form-grid">
+
+                    <div class="form-section">
+                        <h3><span class="step-badge">1</span> Location Details</h3>
+                        <div class="field-group">
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">🏠</span>
+                                <input type="text" id="e-street" placeholder="Locality / Street" required>
+                            </div>
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">#</span>
+                                <input type="number" id="e-ward" placeholder="Ward Number" min="1" required>
+                            </div>
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">🏡</span>
+                                <input type="text" id="e-house" placeholder="House Number / Name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><span class="step-badge">2</span> Family Head Info</h3>
+                        <div class="field-group">
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">👤</span>
+                                <input type="text" id="e-headName" placeholder="Full Name of Head" required>
+                            </div>
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">🏷️</span>
+                                <select id="e-category" required aria-label="Social category">
+                                    <option value="">Social Category</option>
+                                    <option value="General">General</option>
+                                    <option value="OBC">OBC</option>
+                                    <option value="SC">SC</option>
+                                    <option value="ST">ST</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <span class="field-icon" aria-hidden="true">👨‍👩‍👧‍👦</span>
+                                <input type="number" id="e-members" placeholder="Total Members" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section full-col">
+                        <h3><span class="step-badge">3</span> Living Standards</h3>
+                        <div class="check-list">
+                            <label class="check-item">
+                                <input type="checkbox" id="e-water" aria-label="Piped water supply">
+                                <span>💧 Piped Water</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" id="e-electricity" aria-label="Electricity connection">
+                                <span>⚡ Electricity</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" id="e-internet" aria-label="Internet facility">
+                                <span>🌐 Internet</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" id="e-land" aria-label="Owns land">
+                                <span>🌱 Owns Land</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-submit" onclick="saveAdminEdit()">💾 Save Changes</button>
+                    <button type="button" class="btn-logout" onclick="cancelAdminEdit()">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- All household records -->
+        <section class="glass-card records-card" aria-label="All household records">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <h2>📋 All Household Records</h2>
+                <button class="btn-sm" onclick="goAddRecord()">+ Add New Record</button>
+            </div>
+
+            <div class="search-bar-wrap">
+                <span class="field-icon" aria-hidden="true">🔍</span>
+                <input type="search" id="admin-search" placeholder="Search by name, street, ward, category…"
+                    aria-label="Search all records" oninput="renderAdminRecords()">
+            </div>
+
+            <ul id="admin-records-list" class="records-grid" aria-live="polite"></ul>
+        </section>
+
+    </main>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Scripts: shared utilities first, then admin module -->
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

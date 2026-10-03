@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Government of Kerala – Official Digital Census Portal 2026. Secure household data submission for Census Enumerators.">
+    <title>Kerala Digital Census 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <!-- ═══════════════ LOGIN PAGE ═══════════════ -->
+    <main id="login-page" class="login-page">
+        <div class="glass-card login-card" role="region" aria-label="Login">
+
+            <header class="login-header">
+                <div class="login-emblem" aria-hidden="true">
+                    <div class="emblem-circle">🏛️</div>
+                </div>
+                <h1>CENSUS 2026</h1>
+                <p>Government of Kerala &mdash; Official Digital Census Portal</p>
+            </header>
+
+            <!-- Outer role toggle (Enumerator / Administrator) -->
+            <div class="role-toggle" role="tablist" aria-label="Login type">
+                <button class="role-btn active" id="tab-user" role="tab" aria-selected="true"
+                    aria-controls="panel-user" onclick="switchRole('user')">
+                    👤 Enumerator
+                </button>
+                <button class="role-btn" id="tab-admin" role="tab" aria-selected="false"
+                    aria-controls="panel-admin" onclick="switchRole('admin')">
+                    🔐 Administrator
+                </button>
+            </div>
+
+            <!-- ─────────── ENUMERATOR PANEL ─────────── -->
+            <section class="login-panel active" id="panel-user" role="tabpanel" aria-labelledby="tab-user">
+
+                <!-- Inner auth tab switcher: Sign In | Sign Up -->
+                <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+                    <button class="auth-tab active" id="authtab-signin" role="tab"
+                        onclick="switchAuthMode('signin')">Sign In</button>
+                    <button class="auth-tab" id="authtab-signup" role="tab"
+                        onclick="switchAuthMode('signup')">Sign Up</button>
+                </div>
+
+                <!-- ── Sign In sub-panel ── -->
+                <div class="auth-panel active" id="auth-signin">
+                    <form id="signin-form" novalidate>
+
+                        <div class="field">
+                            <span class="field-icon" aria-hidden="true">✉️</span>
+                            <input type="email" id="signin-email" placeholder="Email address"
+                                required autocomplete="email">
+                        </div>
+
+                        <div class="field pwd-field">
+                            <span class="field-icon" aria-hidden="true">🔒</span>
+                            <input type="password" id="signin-password" placeholder="Password"
+                                required autocomplete="current-password">
+                            <button type="button" class="pwd-toggle" data-target="signin-password"
+                                aria-label="Show password">👁️</button>
+                        </div>
+
+                        <div id="signin-error" class="error-msg" role="alert"></div>
+
+                        <button type="submit" class="btn-primary">Sign In →</button>
+
+                        <p class="auth-switch">
+                            Forgot your password?
+                            <button type="button" class="link-btn"
+                                onclick="switchAuthMode('reset')">Reset it</button>
+                        </p>
+                        <p class="auth-switch">
+                            New here?
+                            <button type="button" class="link-btn"
+                                onclick="switchAuthMode('signup')">Create an account</button>
+                        </p>
+                    </form>
+                </div>
+
+                <!-- ── Sign Up sub-panel ── -->
+                <div class="auth-panel" id="auth-signup">
+                    <form id="signup-form" novalidate>
+
+                        <div class="field">
+                            <span class="field-icon" aria-hidden="true">🙍</span>
+                            <input type="text" id="signup-name" placeholder="Full name"
+                                required autocomplete="name">
+                        </div>
+
+                        <div class="field">
+                            <span class="field-icon" aria-hidden="true">✉️</span>
+                            <input type="email" id="signup-email" placeholder="Email address"
+                                required autocomplete="email">
+                        </div>
+
+                        <div class="field pwd-field">
+                            <span class="field-icon" aria-hidden="true">🔒</span>
+                            <input type="password" id="signup-password" placeholder="Password (min. 6 chars)"
+                                required autocomplete="new-password">
+                            <button type="button" class="pwd-toggle" data-target="signup-password"
+                                aria-label="Show password">👁️</button>
+                        </div>
+
+                        <div class="field pwd-field">
+                            <span class="field-icon" aria-hidden="true">🔐</span>
+                            <input type="password" id="signup-confirm" placeholder="Confirm password"
+                                required autocomplete="new-password">
+                            <button type="button" class="pwd-toggle" data-target="signup-confirm"
+                                aria-label="Show password">👁️</button>
+                        </div>
+
+                        <div id="signup-error" class="error-msg" role="alert"></div>
+
+                        <button type="submit" class="btn-primary btn-signup">Create Account 🎉</button>
+
+                        <p class="auth-switch">
+                            Already have an account?
+                            <button type="button" class="link-btn"
+                                onclick="switchAuthMode('signin')">Sign in</button>
+                        </p>
+                    </form>
+                </div>
+
+                <!-- ── Reset Password sub-panel ── -->
+                <div class="auth-panel" id="auth-reset">
+                    <div class="reset-header">
+                        <div class="reset-icon">🔑</div>
+                        <h2>Reset Password</h2>
+                        <p>Enter your email and choose a new password.</p>
+                    </div>
+                    <form id="reset-form" novalidate>
+
+                        <div class="field">
+                            <span class="field-icon" aria-hidden="true">✉️</span>
+                            <input type="email" id="reset-email" placeholder="Registered email"
+                                required autocomplete="email">
+                        </div>
+
+                        <div class="field pwd-field">
+                            <span class="field-icon" aria-hidden="true">🔒</span>
+                            <input type="password" id="reset-password" placeholder="New password (min. 6 chars)"
+                                required autocomplete="new-password">
+                            <button type="button" class="pwd-toggle" data-target="reset-password"
+                                aria-label="Show password">👁️</button>
+                        </div>
+
+                        <div class="field pwd-field">
+                            <span class="field-icon" aria-hidden="true">🔐</span>
+                            <input type="password" id="reset-confirm" placeholder="Confirm new password"
+                                required autocomplete="new-password">
+                            <button type="button" class="pwd-toggle" data-target="reset-confirm"
+                                aria-label="Show password">👁️</button>
+                        </div>
+
+                        <div id="reset-error" class="error-msg" role="alert"></div>
+
+                        <button type="submit" class="btn-primary btn-reset">Reset Password 🔑</button>
+
+                        <p class="auth-switch">
+                            Remembered it?
+                            <button type="button" class="link-btn"
+                                onclick="switchAuthMode('signin')">Back to Sign In</button>
+                        </p>
+                    </form>
+                </div>
+
+            </section>
+
+            <!-- ─────────── ADMINISTRATOR PANEL ─────────── -->
+            <section class="login-panel" id="panel-admin" role="tabpanel" aria-labelledby="tab-admin">
+                <form id="admin-form" novalidate>
+
+                    <div class="field">
+                        <span class="field-icon" aria-hidden="true">👤</span>
+                        <input type="text" id="admin-username" placeholder="Admin Username"
+                            required autocomplete="username">
+                    </div>
+
+                    <div class="field pwd-field">
+                        <span class="field-icon" aria-hidden="true">🔑</span>
+                        <input type="password" id="admin-password" placeholder="Admin Password"
+                            required autocomplete="current-password">
+                        <button type="button" class="pwd-toggle" data-target="admin-password"
+                            aria-label="Show password">👁️</button>
+                    </div>
+
+                    <div id="admin-error" class="error-msg" role="alert"></div>
+                    <button type="submit" class="btn-admin">🔐 Login as Administrator</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ═══════════════ ENUMERATOR DASHBOARD ═══════════════ -->
+    <div id="dashboard" class="hidden" role="main">
+        <div class="dashboard">
+
+            <nav class="glass-nav" aria-label="Dashboard navigation">
+                <div class="nav-brand">Kerala Census <span>Dashboard</span></div>
+                <div class="nav-actions">
+                    <span id="nav-user-info" aria-live="polite"></span>
+                    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Enumerator stats -->
+            <section class="stats-row" aria-label="Your submission statistics">
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-records">0</div>
+                    <div class="stat-label">Records Submitted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-members">0</div>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-wards">0</div>
+                    <div class="stat-label">Wards Covered</div>
+                </div>
+            </section>
+
+            <!-- Submission form -->
+            <section class="glass-card form-card" aria-label="Household report submission form">
+                <h2 id="form-title">📋 Household Report Submission</h2>
+
+                <div class="edit-mode-banner" id="edit-banner" role="status">
+                    ✏️ <span>Editing record – update the fields and re-submit.</span>
+                    <button type="button" style="margin-left:auto;" class="btn-icon btn-delete"
+                        onclick="cancelEdit()">Cancel</button>
+                </div>
+
+                <hr class="divider" aria-hidden="true">
+
+                <form id="submission-form" novalidate>
+                    <div class="form-grid">
+
+                        <div class="form-section">
+                            <h3><span class="step-badge">1</span> Location Details</h3>
+                            <div class="field-group">
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">🏠</span>
+                                    <input type="text" id="street" placeholder="Locality / Street" required>
+                                </div>
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">#</span>
+                                    <input type="number" id="ward" placeholder="Ward Number" min="1" required>
+                                </div>
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">🏡</span>
+                                    <input type="text" id="house" placeholder="House Number / House Name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><span class="step-badge">2</span> Family Head Info</h3>
+                            <div class="field-group">
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">👤</span>
+                                    <input type="text" id="headName" placeholder="Full Name of Head" required>
+                                </div>
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">🏷️</span>
+                                    <select id="category" required aria-label="Social category">
+                                        <option value="">Social Category</option>
+                                        <option value="General">General</option>
+                                        <option value="OBC">OBC</option>
+                                        <option value="SC">SC</option>
+                                        <option value="ST">ST</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <span class="field-icon" aria-hidden="true">👨‍👩‍👧‍👦</span>
+                                    <input type="number" id="members" placeholder="Total Members" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section full-col">
+                            <h3><span class="step-badge">3</span> Living Standards</h3>
+                            <div class="check-list">
+                                <label class="check-item">
+                                    <input type="checkbox" id="water" aria-label="Piped water supply">
+                                    <span>💧 Piped Water</span>
+                                </label>
+                                <label class="check-item">
+                                    <input type="checkbox" id="electricity" aria-label="Electricity connection">
+                                    <span>⚡ Electricity</span>
+                                </label>
+                                <label class="check-item">
+                                    <input type="checkbox" id="internet" aria-label="Internet facility">
+                                    <span>🌐 Internet</span>
+                                </label>
+                                <label class="check-item">
+                                    <input type="checkbox" id="land" aria-label="Owns land">
+                                    <span>🌱 Owns Land</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="form-error" class="error-msg" role="alert"></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-submit" onclick="finalizeUpload()">
+                            ✅ Finalize &amp; Upload Report
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- My submitted records -->
+            <section class="glass-card records-card" aria-label="My submitted household records">
+                <h3>📂 My Submitted Records</h3>
+                <div class="search-bar-wrap">
+                    <span class="field-icon" aria-hidden="true">🔍</span>
+                    <input type="search" id="user-search" placeholder="Search by name, street, ward…"
+                        aria-label="Search your records" oninput="renderUserRecords()">
+                </div>
+                <ul id="user-records-list" class="records-grid" aria-live="polite"></ul>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Scripts: shared utilities first, then page module -->
+    <script src="js/app.js"></script>
+    <script src="js/user.js"></script>
+</body>
+
+</html>
